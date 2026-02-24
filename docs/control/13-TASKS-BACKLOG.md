@@ -1,0 +1,88 @@
+# TASKS BACKLOG — стартовый бэклог MVP с разделением по ролям
+
+## PHASE 0 — фиксация
+### LOGIC
+- [x] Утвердить API CONTRACT v1
+- [x] Утвердить STATE MACHINE v1
+- [x] Утвердить SQLite schema v1
+
+### UI
+- [x] Утвердить UI flow (Сегодня / Календарь / День / Добавить / Настройки)
+- [x] Утвердить карточку цели и действия
+
+## PHASE 1 — Backend core (Claude)
+### LOGIC
+- [x] Поднять backend (Python)
+- [x] SQLite + миграции/init schema
+- [x] Таблицы users/goals/reminder_policies/events
+- [x] POST /api/goals
+- [x] POST /api/goals/batch
+- [x] GET /api/goals?date=
+- [x] PUT /api/goals/{id}
+- [x] /complete /snooze /move-to-tomorrow /cancel
+- [x] GET/PUT reminder-policy
+- [x] global pause endpoints
+- [x] GET /api/goals/calendar?month=
+- [x] GET /api/events?date=
+- [x] валидация переходов состояний
+- [x] seed default reminder policy
+
+## PHASE 2 — Telegram input (Claude)
+### LOGIC
+- [ ] aiogram bot
+- [ ] /start, /help
+- [ ] простой текст -> цель на сегодня
+- [ ] несколько строк -> batch
+- [ ] (опц.) /add YYYY-MM-DD ...
+- [ ] запись в backend сервис
+
+## PHASE 3 — Mobile UI core (Gemini)
+### UI
+- [ ] Scaffold Flutter app
+- [ ] Навигация
+- [ ] Экран "Сегодня"
+- [ ] Карточка цели + 4 кнопки
+- [ ] Подтверждение для Выполнено/Отменить
+- [ ] Календарь (месяц)
+- [ ] Экран "День"
+- [ ] Добавить/Редактировать цель
+- [ ] Настройки напоминаний
+- [ ] Журнал (минимум)
+
+## PHASE 4 — Integration
+### UI
+- [ ] API client
+- [ ] Fetch goals by date
+- [ ] Actions complete/snooze/move/cancel
+- [ ] Обновление состояния после действий
+- [ ] Ошибки сети + retry
+- [ ] Pull-to-refresh
+
+### LOGIC
+- [ ] Network config/CORS
+- [ ] Стабилизировать errors
+- [ ] Логи отладки
+
+## PHASE 5 — Notifications
+### LOGIC
+- [ ] Финализировать правила уведомлений в коде
+- [ ] Данные/policy для sync
+
+### UI
+- [ ] Локальные уведомления Android
+- [ ] Пересоздание расписания
+- [ ] Rotation active goals
+- [ ] Global pause UI
+- [ ] Quiet period UI
+- [ ] Эскалация (простая v1)
+
+## PHASE 6 — Daily rollover / journal / polish
+### LOGIC
+- [ ] Автоперенос на завтра
+- [ ] auto_moved_to_tomorrow event
+- [ ] morning summary source
+
+### UI
+- [ ] Утренний экран/диалог по автопереносам
+- [ ] Журнал событий
+- [ ] UX-проверка на реальных 3–5 целях в день
