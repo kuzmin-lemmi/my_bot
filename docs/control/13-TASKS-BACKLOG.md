@@ -66,16 +66,17 @@
 
 ## PHASE 5 — Notifications
 ### LOGIC
-- [ ] Финализировать правила уведомлений в коде
-- [ ] Данные/policy для sync
+- [x] Финализировать правила уведомлений в коде
+- [x] Данные/policy для sync
 
 ### UI
-- [ ] Локальные уведомления Android
-- [ ] Пересоздание расписания
-- [ ] Rotation active goals
-- [ ] Global pause UI
-- [ ] Quiet period UI
-- [ ] Эскалация (простая v1)
+- [x] Локальные уведомления Android (flutter_local_notifications)
+- [x] Пересоздание расписания (после fetch/actions)
+- [x] Rotation active goals (базовая реализация в NotificationService)
+- [x] Global pause UI (TodayScreen banner)
+- [x] Quiet period UI (учитывается при расчёте следующего уведомления)
+- [x] Эскалация (логика в NotificationService, расчёт интервала)
+- [ ] Тестирование уведомлений на реальном устройстве
 
 ## PHASE 6 — Daily rollover / journal / polish
 ### LOGIC
@@ -85,5 +86,14 @@
 
 ### UI
 - [ ] Утренний экран/диалог по автопереносам
-- [ ] Журнал событий
+- [x] Журнал событий (JournalScreen)
 - [ ] UX-проверка на реальных 3–5 целях в день
+
+## PHASE 7 — Final Polish (Stage 8)
+### LOGIC & UI
+- [x] Android Manifest (permissions, receivers)
+- [x] build.gradle конфигурация
+- [x] .gitignore для mobile/
+- [x] Документация деплоя (DEPLOYMENT.md)
+- [ ] README.md для всего проекта
+- [ ] Финальное тестирование на реальном устройстве

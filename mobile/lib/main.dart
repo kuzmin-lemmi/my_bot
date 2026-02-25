@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/api_service.dart';
+import 'services/notification_service.dart';
 import 'providers/goal_provider.dart';
 import 'providers/policy_provider.dart';
 import 'screens/today_screen.dart';
@@ -8,7 +9,13 @@ import 'screens/calendar_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/journal_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize notification service
+  await NotificationService.initialize();
+  await NotificationService.requestPermissions();
+
   // Replace with your actual backend URL and Token
   const String baseUrl = 'http://localhost:8000';
   const String token = 'change-me';
