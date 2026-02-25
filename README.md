@@ -75,6 +75,13 @@ flutter pub get
 flutter run
 ```
 
+### 4. Установка APK без Flutter (самый простой способ)
+
+- В репозитории откройте `Actions -> Build Android APK -> Run workflow`
+- После успешной сборки скачайте артефакт `focusday-app-release`
+- Распакуйте и установите `app-release.apk` на телефон
+- Пошаговая инструкция: `docs/APK-INSTALL-AND-TELEGRAM-CHECK.md`
+
 ---
 
 ## Основные функции

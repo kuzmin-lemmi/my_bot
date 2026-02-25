@@ -16,9 +16,15 @@ void main() async {
   await NotificationService.initialize();
   await NotificationService.requestPermissions();
 
-  // Replace with your actual backend URL and Token
-  const String baseUrl = 'http://localhost:8000';
-  const String token = 'change-me';
+  // Can be injected at build time via --dart-define.
+  const String baseUrl = String.fromEnvironment(
+    'BACKEND_URL',
+    defaultValue: 'http://10.0.2.2:8000',
+  );
+  const String token = String.fromEnvironment(
+    'MVP_TOKEN',
+    defaultValue: 'change-me',
+  );
 
   final apiService = ApiService(baseUrl: baseUrl, token: token);
 
