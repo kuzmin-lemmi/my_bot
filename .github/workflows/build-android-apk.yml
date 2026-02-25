@@ -50,7 +50,9 @@ jobs:
             MVP_TOKEN="change-me"
           fi
 
-          flutter build apk --release \
+          flutter pub deps
+
+          flutter build apk --release -v \
             --dart-define=BACKEND_URL="$BACKEND_URL" \
             --dart-define=MVP_TOKEN="$MVP_TOKEN"
 
