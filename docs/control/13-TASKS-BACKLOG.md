@@ -36,27 +36,28 @@
 - [ ] (опц.) /add YYYY-MM-DD ...
 - [x] запись в backend сервис
 
-## PHASE 3 — Mobile UI core (Gemini)
+## PHASE 3 — Mobile UI core (Claude)
 ### UI
-- [ ] Scaffold Flutter app
-- [ ] Навигация
-- [ ] Экран "Сегодня"
-- [ ] Карточка цели + 4 кнопки
-- [ ] Подтверждение для Выполнено/Отменить
-- [ ] Календарь (месяц)
-- [ ] Экран "День"
-- [ ] Добавить/Редактировать цель
-- [ ] Настройки напоминаний
-- [ ] Журнал (минимум)
+- [x] Scaffold Flutter app (mobile/ directory)
+- [x] Навигация (Material routes)
+- [x] Экран "Сегодня" (TodayScreen)
+- [x] Карточка цели + 4 кнопки (GoalCard + actions)
+- [x] Подтверждение для Выполнено/Отменить (Dialogs)
+- [x] Календарь (month) (TableCalendar integration)
+- [x] Экран "День" (Интегрировано в TodayScreen через выбор даты)
+- [x] Добавить/Редактировать цель (GoalEditScreen)
+- [x] Настройки напоминаний (SettingsScreen)
+- [x] Журнал (JournalScreen)
 
 ## PHASE 4 — Integration
 ### UI
-- [ ] API client
-- [ ] Fetch goals by date
-- [ ] Actions complete/snooze/move/cancel
-- [ ] Обновление состояния после действий
-- [ ] Ошибки сети + retry
-- [ ] Pull-to-refresh
+- [x] API client (ApiService)
+- [x] Fetch goals by date (GoalProvider)
+- [x] Actions complete/snooze/move/cancel (GoalProvider actions)
+- [x] Обновление состояния после действий (notifyListeners)
+- [x] Ошибки сети + retry (Базовая обработка в ApiService/Provider)
+- [x] Pull-to-refresh (RefreshIndicator на главном экране)
+
 
 ### LOGIC
 - [ ] Network config/CORS

@@ -128,7 +128,10 @@ def seed_single_user_defaults(db_path: Path) -> None:
                 """,
                 (None, "MVP User", "Europe/Paris", timestamp, timestamp),
             )
-            user_id = int(cursor.lastrowid)
+            raw_id = cursor.lastrowid
+            if raw_id is None:
+                raise RuntimeError("Failed to create default user")
+            user_id = int(raw_id)
         else:
             user_id = int(user["id"])
 
