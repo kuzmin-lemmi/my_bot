@@ -78,9 +78,9 @@
 
 ## PHASE 6 — Daily rollover / journal / polish
 ### LOGIC
-- [ ] Автоперенос на завтра
-- [ ] auto_moved_to_tomorrow event
-- [ ] morning summary source
+- [x] Автоперенос на завтра (POST /api/goals/rollover)
+- [x] auto_moved_to_tomorrow event (source=backend_auto)
+- [x] morning summary source (moved_count + goals list в response)
 
 ### UI
 - [ ] Утренний экран/диалог по автопереносам

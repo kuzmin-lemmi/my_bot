@@ -134,9 +134,11 @@ def _create_event(
         """,
         (goal_id, action_type, json.dumps(payload or {}), source, timestamp),
     )
-    event_id = int(cursor.lastrowid)
+    event_id = cursor.lastrowid
+    if event_id is None:
+        raise APIError("INTERNAL_ERROR", "Event insert failed", 500)
     return connection.execute(
-        "SELECT * FROM goal_action_events WHERE id = ?", (event_id,)
+        "SELECT * FROM goal_action_events WHERE id = ?", (int(event_id),)
     ).fetchone()
 
 
@@ -230,7 +232,10 @@ def _create_goal(connection: sqlite3.Connection, user_id: int, item: GoalCreateI
             timestamp,
         ),
     )
-    goal_id = int(cursor.lastrowid)
+    raw_goal_id = cursor.lastrowid
+    if raw_goal_id is None:
+        raise APIError("INTERNAL_ERROR", "Goal insert failed", 500)
+    goal_id = int(raw_goal_id)
     _create_event(connection, goal_id, "created", item.source, {"target_date": target_date})
     row = connection.execute("SELECT * FROM goals WHERE id = ?", (goal_id,)).fetchone()
     if row is None:
@@ -526,6 +531,66 @@ def move_to_tomorrow(goal_id: int) -> dict[str, object]:
             "data": {
                 "goal": _goal_to_dto(updated),
                 "event": _event_to_dto(event),
+            },
+        }
+
+
+@router.post("/rollover")
+def rollover_goals() -> dict[str, object]:
+    """AUTO_MOVE_TO_TOMORROW — перенести все просроченные активные/snoozed цели на следующий день.
+
+    Idempotent: можно запускать повторно — повторный вызов в тот же день
+    не перенесёт уже перенесённые цели (target_date будет >= today).
+    """
+    today = date.today().isoformat()
+    timestamp = now_iso()
+
+    with _db() as connection:
+        user_id = _single_user_id(connection)
+
+        overdue_rows = connection.execute(
+            """
+            SELECT * FROM goals
+            WHERE user_id = ? AND status IN ('active', 'snoozed') AND target_date < ?
+            ORDER BY target_date, id
+            """,
+            (user_id, today),
+        ).fetchall()
+
+        moved = []
+        for row in overdue_rows:
+            old_date = date.fromisoformat(row["target_date"])
+            new_date = (old_date + timedelta(days=1)).isoformat()
+
+            connection.execute(
+                """
+                UPDATE goals
+                SET target_date = ?, status = 'active', snooze_until = NULL,
+                    reminder_ignore_count = 0, updated_at = ?
+                WHERE id = ? AND status IN ('active', 'snoozed')
+                """,
+                (new_date, timestamp, row["id"]),
+            )
+            _create_event(
+                connection,
+                row["id"],
+                "auto_moved_to_tomorrow",
+                "backend_auto",
+                {"from": row["target_date"], "to": new_date},
+            )
+            updated = connection.execute(
+                "SELECT * FROM goals WHERE id = ?", (row["id"],)
+            ).fetchone()
+            if updated is not None:
+                moved.append(updated)
+
+        connection.commit()
+
+        return {
+            "ok": True,
+            "data": {
+                "moved_count": len(moved),
+                "goals": [_goal_to_dto(g) for g in moved],
             },
         }
 
