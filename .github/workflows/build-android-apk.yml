@@ -28,16 +28,17 @@ jobs:
           channel: stable
 
       - name: Prepare Flutter project
-        working-directory: mobile
         run: |
           flutter --version
-          flutter create . --platforms=android
-          rm -f android/app/build.gradle.kts
-          rm -f android/build.gradle.kts
+          flutter create --platforms=android --project-name focus_day ci_mobile
+          rm -rf ci_mobile/lib
+          cp -R mobile/lib ci_mobile/lib
+          cp mobile/pubspec.yaml ci_mobile/pubspec.yaml
+          cd ci_mobile
           flutter pub get
 
       - name: Build release APK
-        working-directory: mobile
+        working-directory: ci_mobile
         run: |
           BACKEND_URL="${{ secrets.BACKEND_URL }}"
           MVP_TOKEN="${{ secrets.MVP_TOKEN }}"
@@ -50,8 +51,6 @@ jobs:
             MVP_TOKEN="change-me"
           fi
 
-          flutter pub deps
-
           flutter build apk --release -v \
             --dart-define=BACKEND_URL="$BACKEND_URL" \
             --dart-define=MVP_TOKEN="$MVP_TOKEN"
@@ -60,5 +59,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: focusday-app-release
-          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          path: ci_mobile/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
