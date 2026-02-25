@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:timezone/timezone.dart' as tz;
 import '../models/goal.dart';
 import '../models/reminder_policy.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +23,8 @@ class NotificationService {
         // Handle notification tap
       },
     );
+
+    tzdata.initializeTimeZones();
 
     await Workmanager().initialize(
       _callbackDispatcher,
@@ -130,11 +135,13 @@ class NotificationService {
 
     const details = NotificationDetails(android: androidDetails);
 
+    final tzScheduled = tz.TZDateTime.from(scheduledTime, tz.local);
+
     await _notifications.zonedSchedule(
       goal.id,
       'Напоминание: ${goal.title}',
       goal.note ?? 'Пора выполнить эту цель!',
-      scheduledTime,
+      tzScheduled,
       details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,

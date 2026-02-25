@@ -32,6 +32,8 @@ jobs:
         run: |
           flutter --version
           flutter create . --platforms=android
+          rm -f android/app/build.gradle.kts
+          rm -f android/build.gradle.kts
           flutter pub get
 
       - name: Build release APK
