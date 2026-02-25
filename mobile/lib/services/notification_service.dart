@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 import '../models/goal.dart';
@@ -25,11 +24,6 @@ class NotificationService {
     );
 
     tzdata.initializeTimeZones();
-
-    await Workmanager().initialize(
-      _callbackDispatcher,
-      isInDebugMode: false,
-    );
 
     _initialized = true;
   }
@@ -153,12 +147,4 @@ class NotificationService {
     await androidImplementation?.requestNotificationsPermission();
     await androidImplementation?.requestExactAlarmsPermission();
   }
-}
-
-@pragma('vm:entry-point')
-void _callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    // Background sync logic can be implemented here
-    return Future.value(true);
-  });
 }
