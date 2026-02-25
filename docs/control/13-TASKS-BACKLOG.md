@@ -29,12 +29,12 @@
 
 ## PHASE 2 — Telegram input (Claude)
 ### LOGIC
-- [ ] aiogram bot
-- [ ] /start, /help
-- [ ] простой текст -> цель на сегодня
-- [ ] несколько строк -> batch
+- [x] aiogram bot
+- [x] /start, /help
+- [x] простой текст -> цель на сегодня
+- [x] несколько строк -> batch
 - [ ] (опц.) /add YYYY-MM-DD ...
-- [ ] запись в backend сервис
+- [x] запись в backend сервис
 
 ## PHASE 3 — Mobile UI core (Gemini)
 ### UI
